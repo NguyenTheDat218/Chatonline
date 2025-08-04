@@ -1,21 +1,18 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
   <title>Simple Chat</title>
 
-  <!-- Firebase compat SDK -->
+  <!-- Firebase compat SDKs -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
 
+  <!-- CSS -->
   <style>
-    * {
-      box-sizing: border-box;
-    }
-
     body {
       font-family: Arial, sans-serif;
       background: #f0f2f5;
@@ -27,7 +24,7 @@
     }
 
     #chatContainer {
-      width: 90%;
+      width: 100%;
       max-width: 500px;
       background: #fff;
       margin-top: 30px;
@@ -47,7 +44,7 @@
 
     #messages {
       padding: 10px;
-      height: 60vh;
+      height: 400px;
       overflow-y: auto;
       display: flex;
       flex-direction: column;
@@ -57,7 +54,7 @@
     .msg {
       padding: 8px 12px;
       border-radius: 16px;
-      max-width: 80%;
+      max-width: 70%;
       word-wrap: break-word;
     }
 
@@ -81,7 +78,6 @@
       display: flex;
       padding: 10px;
       border-top: 1px solid #ccc;
-      gap: 10px;
     }
 
     #msgInput {
@@ -89,33 +85,37 @@
       padding: 10px;
       border: 1px solid #ccc;
       border-radius: 20px;
+      font-size: 16px; /* fix zoom */
     }
 
     button {
+      margin-left: 10px;
       padding: 10px 16px;
       border: none;
       border-radius: 20px;
       background-color: #007bff;
       color: white;
       cursor: pointer;
+      font-size: 16px; /* fix zoom */
     }
 
     #usernameSection {
       margin-top: 50px;
-      text-align: center;
     }
 
-    #usernameInput {
+    input[type="text"] {
       padding: 10px;
-      width: 80%;
-      max-width: 300px;
+      width: 250px;
       border: 1px solid #ccc;
       border-radius: 20px;
+      font-size: 16px; /* fix zoom */
     }
   </style>
 
+  <!-- Script chính -->
   <script defer src="main.js"></script>
 </head>
+
 <body>
   <div id="usernameSection">
     <h2>💬 Nhập tên để bắt đầu</h2>
@@ -131,5 +131,16 @@
       <button onclick="sendMessage()">Gửi</button>
     </div>
   </div>
+
+  <!-- Fix iOS: scroll xuống khi focus input -->
+  <script>
+    const msgInput = document.getElementById("msgInput");
+    msgInput.addEventListener("focus", () => {
+      setTimeout(() => {
+        const messages = document.getElementById("messages");
+        messages.scrollTop = messages.scrollHeight;
+      }, 300);
+    });
+  </script>
 </body>
 </html>
