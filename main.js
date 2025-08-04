@@ -10,7 +10,6 @@ const firebaseConfig = {
   databaseURL: "https://chatonline-96b8c-default-rtdb.asia-southeast1.firebasedatabase.app"
 };
 
-// === Khởi tạo Firebase ===
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 const rtdb = firebase.database();
@@ -21,7 +20,6 @@ let presenceRef = null;
 let displayName = "";
 let presenceRoot = rtdb.ref("presence");
 
-// === Gửi tin nhắn ===
 window.sendMessage = function () {
   const input = document.getElementById("msgInput");
   const text = input.value.trim();
@@ -37,7 +35,6 @@ window.sendMessage = function () {
   input.value = "";
 };
 
-// === Lắng nghe tin nhắn ===
 function listenMessages() {
   const msgBox = document.getElementById("messages");
   db.collection("chats").orderBy("timestamp")
@@ -50,31 +47,19 @@ function listenMessages() {
 
         const el = document.createElement("div");
         el.className = "msg " + (isMe ? "me" : "other");
-        
-        el.innerHTML = `
-          <div class="sender">${senderLabel}</div>
-          ${data.message}
-        `;
-
+        el.innerHTML = `<div class="sender">${senderLabel}</div>${data.message}`;
         msgBox.appendChild(el);
         msgBox.scrollTop = msgBox.scrollHeight;
       });
     });
 }
 
-
-// === Quản lý người online chính xác ===
 function handlePresence(userId) {
   presenceRef = rtdb.ref("presence/" + userId);
-
-  firebase.database().ref(".info/connected").on("value", function (snap) {
+  firebase.database().ref(".info/connected").on("value", (snap) => {
     if (snap.val() === true) {
-      presenceRef.set({
-        online: true,
-        last_seen: Date.now()
-      });
+      presenceRef.set({ online: true, last_seen: Date.now() });
       presenceRef.onDisconnect().remove();
-
       setInterval(() => {
         presenceRef.update({ last_seen: Date.now() });
       }, 5000);
@@ -87,8 +72,7 @@ function handlePresence(userId) {
     let onlineCount = 0;
 
     if (users) {
-      Object.keys(users).forEach(uid => {
-        const user = users[uid];
+      Object.values(users).forEach(user => {
         if (user.last_seen && (now - user.last_seen < 10000)) {
           onlineCount++;
         }
@@ -105,32 +89,28 @@ function handlePresence(userId) {
   });
 }
 
-// === Bắt đầu chat sau khi nhập tên ===
 window.startChat = function () {
   const nameInput = document.getElementById("usernameInput");
   const name = nameInput.value.trim();
-
   if (name === "") {
     alert("Bạn phải nhập tên trước khi chat.");
     return;
   }
 
   displayName = name;
-
-  // Ẩn phần nhập tên, hiện phần chat
   document.getElementById("usernameSection").style.display = "none";
   document.getElementById("chatContainer").style.display = "flex";
 
-
-  // Đăng nhập ẩn danh sau khi có tên
   auth.signInAnonymously().then(() => {
     userId = "user_" + Math.random().toString(36).substr(2, 9);
     handlePresence(userId);
     listenMessages();
   });
 };
+
+// Gửi bằng phím Enter
 document.addEventListener("keydown", function (e) {
-  if (e.key === "Enter") {
+  if (e.key === "Enter" && document.getElementById("chatContainer").style.display === "flex") {
     sendMessage();
   }
 });

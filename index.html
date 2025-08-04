@@ -1,17 +1,21 @@
 <!DOCTYPE html>
-<html>
+<html lang="vi">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Simple Chat</title>
 
-  <!-- Firebase compat SDKs (dùng nếu bạn dùng cú pháp firebase.*** như trong code) -->
+  <!-- Firebase compat SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
 
-  <!-- Script của bạn -->
-  <title>Simple Chat</title>
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       font-family: Arial, sans-serif;
       background: #f0f2f5;
@@ -23,7 +27,7 @@
     }
 
     #chatContainer {
-      width: 100%;
+      width: 90%;
       max-width: 500px;
       background: #fff;
       margin-top: 30px;
@@ -43,7 +47,7 @@
 
     #messages {
       padding: 10px;
-      height: 400px;
+      height: 60vh;
       overflow-y: auto;
       display: flex;
       flex-direction: column;
@@ -53,9 +57,8 @@
     .msg {
       padding: 8px 12px;
       border-radius: 16px;
-      max-width: 70%;
+      max-width: 80%;
       word-wrap: break-word;
-      position: relative;
     }
 
     .me {
@@ -78,6 +81,7 @@
       display: flex;
       padding: 10px;
       border-top: 1px solid #ccc;
+      gap: 10px;
     }
 
     #msgInput {
@@ -88,7 +92,6 @@
     }
 
     button {
-      margin-left: 10px;
       padding: 10px 16px;
       border: none;
       border-radius: 20px;
@@ -99,18 +102,20 @@
 
     #usernameSection {
       margin-top: 50px;
+      text-align: center;
     }
 
-    input[type="text"] {
+    #usernameInput {
       padding: 10px;
-      width: 250px;
+      width: 80%;
+      max-width: 300px;
       border: 1px solid #ccc;
       border-radius: 20px;
     }
   </style>
+
   <script defer src="main.js"></script>
 </head>
-
 <body>
   <div id="usernameSection">
     <h2>💬 Nhập tên để bắt đầu</h2>
