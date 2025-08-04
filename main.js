@@ -45,15 +45,23 @@ function listenMessages() {
       msgBox.innerHTML = "";
       snapshot.forEach(doc => {
         const data = doc.data();
-        const senderLabel = (data.senderId === userId) ? "Bạn" : data.senderName || "Ẩn danh";
+        const isMe = data.senderId === userId;
+        const senderLabel = isMe ? "Bạn" : data.senderName || "Ẩn danh";
+
         const el = document.createElement("div");
-        el.className = "msg";
-        el.textContent = `${senderLabel}: ${data.message}`;
+        el.className = "msg " + (isMe ? "me" : "other");
+        
+        el.innerHTML = `
+          <div class="sender">${senderLabel}</div>
+          ${data.message}
+        `;
+
         msgBox.appendChild(el);
         msgBox.scrollTop = msgBox.scrollHeight;
       });
     });
 }
+
 
 // === Quản lý người online chính xác ===
 function handlePresence(userId) {
@@ -111,7 +119,8 @@ window.startChat = function () {
 
   // Ẩn phần nhập tên, hiện phần chat
   document.getElementById("usernameSection").style.display = "none";
-  document.getElementById("chatSection").style.display = "block";
+  document.getElementById("chatContainer").style.display = "flex";
+
 
   // Đăng nhập ẩn danh sau khi có tên
   auth.signInAnonymously().then(() => {
@@ -120,3 +129,8 @@ window.startChat = function () {
     listenMessages();
   });
 };
+document.addEventListener("keydown", function (e) {
+  if (e.key === "Enter") {
+    sendMessage();
+  }
+});
