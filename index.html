@@ -15,9 +15,17 @@
 
 <body>
   <h2>💬 Simple Chat</h2>
-  <div><strong id="online">Đang tải người online...</strong></div>
-  <div id="messages"></div>
-  <input type="text" id="msgInput" placeholder="Type a message..." />
-  <button onclick="sendMessage()">Send</button>
+
+  <div id="usernameSection">
+    <input type="text" id="usernameInput" placeholder="Nhập tên của bạn..." />
+    <button onclick="startChat()">Bắt đầu chat</button>
+  </div>
+
+  <div id="chatSection" style="display: none;">
+    <div><strong id="online">Đang tải người online...</strong></div>
+    <div id="messages"></div>
+    <input type="text" id="msgInput" placeholder="Type a message..." />
+    <button onclick="sendMessage()">Send</button>
+  </div>
 </body>
 </html>

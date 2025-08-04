@@ -19,6 +19,7 @@ const auth = firebase.auth();
 
 let userId = null;
 let presenceRef = null;
+let displayName = ""; // tên hiển thị người dùng
 let presenceRoot = rtdb.ref("presence");
 
 // Đăng nhập ẩn danh
@@ -35,12 +36,14 @@ window.sendMessage = function () {
 
   db.collection("chats").add({
     message: text,
-    sender: userId,
+    senderId: userId,
+    senderName: displayName,
     timestamp: firebase.firestore.FieldValue.serverTimestamp()
   });
 
   input.value = "";
 };
+
 
 
 // Lắng nghe tin nhắn
@@ -53,12 +56,15 @@ function listenMessages() {
         const data = doc.data();
         const el = document.createElement("div");
         el.className = "msg";
-        el.textContent = (data.sender === userId ? "You" : "Friend") + ": " + data.message;
+
+        const senderLabel = (data.senderId === userId) ? "Bạn" : data.senderName || "Ẩn danh";
+        el.textContent = `${senderLabel}: ${data.message}`;
         msgBox.appendChild(el);
         msgBox.scrollTop = msgBox.scrollHeight;
       });
     });
 }
+
 
 // Quản lý số người online
 function handlePresence(userId) {
@@ -78,10 +84,32 @@ function handlePresence(userId) {
 
     document.getElementById("online").textContent = `${onlineCount}/2 người đang online`;
 
-    if (onlineCount > 2) {
-      alert("Trang web chỉ cho phép tối đa 2 người cùng truy cập.");
+    if (onlineCount > 10) {
+      alert("Trang web chỉ cho phép tối đa 10 người cùng truy cập.");
       document.body.innerHTML = "<h2>Đã đủ người tham gia!</h2>";
       if (presenceRef) presenceRef.remove();
     }
   });
 }
+window.startChat = function () {
+  const nameInput = document.getElementById("usernameInput");
+  const name = nameInput.value.trim();
+
+  if (name === "") {
+    alert("Bạn phải nhập tên trước khi chat.");
+    return;
+  }
+
+  displayName = name;
+
+  // Ẩn khung nhập tên, hiện khung chat
+  document.getElementById("usernameSection").style.display = "none";
+  document.getElementById("chatSection").style.display = "block";
+
+  // Tiếp tục đăng nhập ẩn danh và xử lý
+  auth.signInAnonymously().then(() => {
+    userId = "user_" + Math.random().toString(36).substr(2, 9);
+    handlePresence(userId);
+    listenMessages();
+  });
+};
