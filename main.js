@@ -80,11 +80,11 @@ function handlePresence(userId) {
 
   presenceRoot.on("value", (snapshot) => {
     const users = snapshot.val();
-    const onlineCount = users ? Object.keys(users).length : 0 - 1;
+    const onlineCount = users ? Object.keys(users).length : 0;
 
-    document.getElementById("online").textContent = `${onlineCount}/10 người đang online`;
+    document.getElementById("online").textContent = `${onlineCount-1}/10 người đang online`;
 
-    if (onlineCount > 10) {
+    if ((onlineCount-1) > 10) {
       alert("Trang web chỉ cho phép tối đa 10 người cùng truy cập.");
       document.body.innerHTML = "<h2>Đã đủ người tham gia!</h2>";
       if (presenceRef) presenceRef.remove();
