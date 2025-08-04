@@ -1,3 +1,4 @@
+
 // === Firebase config ===
 const firebaseConfig = {
   apiKey: "AIzaSyAlpYiV5p90QGUZL2oPD5vR65YlWMo62L0",
@@ -7,7 +8,7 @@ const firebaseConfig = {
   messagingSenderId: "713765450768",
   appId: "1:713765450768:web:cf029b5a7a16e5ad7a0695",
   measurementId: "G-ME171J2SWM",
-  databaseURL: "https://chatonline-96b8c-default-rtdb.firebaseio.com" // thêm dòng này để dùng Realtime DB
+  databaseURL: "https://chatonline-96b8c-default-rtdb.asia-southeast1.firebasedatabase.app"// thêm dòng này để dùng Realtime DB
 };
 
 // === Khởi tạo Firebase ===
@@ -27,18 +28,20 @@ auth.signInAnonymously().then(() => {
   listenMessages();
 });
 
-// Gửi tin nhắn
-function sendMessage() {
+window.sendMessage = function () {
   const input = document.getElementById("msgInput");
   const text = input.value.trim();
   if (text === "") return;
+
   db.collection("chats").add({
     message: text,
     sender: userId,
     timestamp: firebase.firestore.FieldValue.serverTimestamp()
   });
+
   input.value = "";
-}
+};
+
 
 // Lắng nghe tin nhắn
 function listenMessages() {
@@ -63,6 +66,7 @@ function handlePresence(userId) {
 
   firebase.database().ref(".info/connected").on("value", function (snap) {
     if (snap.val() === true) {
+      console.log("connected");
       presenceRef.set(true);
       presenceRef.onDisconnect().remove();
     }

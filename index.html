@@ -2,17 +2,17 @@
 <html>
 <head>
   <title>Simple Chat</title>
-  <!-- Firebase SDKs -->
-   <!-- Firebase App -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-<!-- Firebase Database -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
-  <script defer src="script.js"></script>
+
+  <!-- Firebase compat SDKs (dùng nếu bạn dùng cú pháp firebase.*** như trong code) -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+
+  <!-- Script của bạn -->
+  <script defer src="main.js"></script>
 </head>
+
 <body>
   <h2>💬 Simple Chat</h2>
   <div><strong id="online">Đang tải người online...</strong></div>
